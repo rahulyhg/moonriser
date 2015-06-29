@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: be.persgroep.red.diocontent.api:diocontent-api-client:1.20">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/be/persgroep/red/diocontent/api/diocontent-api-client/1.20/diocontent-api-client-1.20.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

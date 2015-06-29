@@ -1,0 +1,56 @@
+subprojects {
+    apply plugin: "java"
+    apply plugin: "groovy"
+    apply plugin: 'maven-publish'
+
+    sourceCompatibility = 1.7
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://build.persgroep.net/artifactory/repo" }
+        maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+
+    dependencies {
+        compile "org.codehaus.groovy:groovy-all:2.3.6"
+        compile group: 'com.google.guava', name: 'guava', version: '18.0'
+        compile("joda-time:joda-time:2.5")
+        compile('javax.el:javax.el-api:2.2.4') //el is required for Hibernate Validator
+        compile('org.glassfish.web:javax.el:2.2.4')
+        compile('org.hibernate:hibernate-validator:5.1.3.Final')
+        compile('com.fasterxml.jackson.core:jackson-databind:2.4.3')
+        compile("com.fasterxml.jackson.datatype:jackson-datatype-joda:2.4.3")
+        compile('com.fasterxml.jackson.datatype:jackson-datatype-guava:2.5.0')
+
+        testCompile "org.spockframework:spock-core:1.0-groovy-2.3-SNAPSHOT"
+        testCompile "org.spockframework:spock-spring:1.0-groovy-2.3-SNAPSHOT"
+        testCompile "org.springframework:spring-test:4.1.2.RELEASE"
+    }
+
+    jar {
+        baseName = "pe-service-${project.name}"
+    }
+
+    ext {
+        artifactoryBaseUrl = 'http://build.persgroep.net/artifactory'
+        artifactorySnapshotRepoUrl = "$artifactoryBaseUrl/libs-snapshot-local"
+        artifactoryReleaseRepoUrl = "$artifactoryBaseUrl/libs-release-local"
+    }
+
+}
+
+allprojects {
+    apply plugin: 'idea'
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2'
+}

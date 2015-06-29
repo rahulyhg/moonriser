@@ -1,0 +1,22 @@
+publishing {
+    publications {
+        plugin(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name 'remoteArtifactory'
+            url project.version.endsWith('-SNAPSHOT') ? artifactorySnapshotRepoUrl : artifactoryReleaseRepoUrl
+            credentials {
+                username = 'jenkins'
+                password = 'PHObCv9Vug7a8TjwGG9G'
+            }
+        }
+    }
+}
+
+dependencies {
+    //API documentation using Swagger
+    compile('com.wordnik:swagger-annotations:1.3.11')
+}

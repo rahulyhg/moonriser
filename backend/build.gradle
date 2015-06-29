@@ -1,0 +1,63 @@
+buildscript {
+    repositories {
+        maven { url "https://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.9.RELEASE")
+    }
+}
+
+apply plugin: 'war'
+apply plugin: 'spring-boot'
+
+repositories {
+    maven { url "https://repo.spring.io/libs-release" }
+}
+
+publishing {
+    publications {
+        plugin(MavenPublication) {
+            from components.web
+        }
+    }
+    repositories {
+        maven {
+            name 'remoteArtifactory'
+            url project.version.endsWith('-SNAPSHOT') ? artifactorySnapshotRepoUrl : artifactoryReleaseRepoUrl
+            credentials {
+                username = 'jenkins'
+                password = 'PHObCv9Vug7a8TjwGG9G'
+            }
+        }
+    }
+}
+
+publish.dependsOn assemble
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    compile(group: 'com.oracle.ojdbc', name: 'ojdbc', version: '7')
+    compile('org.springframework:spring-jdbc')
+    compile 'org.springframework.data:spring-data-oracle:1.1.0.RELEASE'
+    compile('org.springframework:spring-web')
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    // TODO: compile("org.springframework.boot:spring-boot-starter-security")
+    compile('com.mangofactory:swagger-springmvc:0.9.1')
+
+    compile(group: 'be.persgroep.red.diocontent.webservice', name: 'diocontent-webservice-client', version: '2.21')
+
+    compile project(':common')
+
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+}
+
+//applicationDefaultJvmArgs = [
+//        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+//]
